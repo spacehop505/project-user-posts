@@ -1,7 +1,7 @@
 const express = require("express");
 
 const ServerRoutes = require('./route/ServerRoutes');
-require('./model/conection/ConnectionDB');
+require('./model/connection/ConnectionDB');
 
 const app = express();
 app.use(express.json());

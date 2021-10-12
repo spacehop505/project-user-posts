@@ -20,7 +20,7 @@ const login = (req, res) => {
         res.status(403).json({ error: { status: 403, message: 'INVALID_EMAIL' } });
       }
     }).catch((err) => {
-      res.status(400).json({ error: { status: 400, message: 'MONGO_ERROR' } });
+      res.status(401).json({ error: { status: 401, message: 'Could not sign in' } });
     });
 };
 

@@ -9,24 +9,8 @@ const register = (req, res) => {
       res.status(200).json({ success: { status: 200, message: 'REGISTER_SUCCESS', user: { id: user.id, email: user.email } } });
     })
     .catch(err => {
-      console.log(err);
-      if (err.constructor.name === 'ValidationError') {
-        errorMessage = 'VALIDATION_ERROR';
-      } else if (err.constructor.name === 'MongoServerError') {
-        if (err.keyPattern.email) {
-          errorMessage = 'EMAIL_EXISTS';
-        } else if (err.keyPattern.username) {
-          errorMessage = 'USERNAME_EXISTS';
-        } else {
-          errorMessage = err;
-        }
-      } else {
-        errorMessage = err;
-      }
-      res.status(400).json({ error: { status: 400, message: errorMessage } });
+      res.status(400).json({ error: { status: 400, message: err } });
     })
-}
-
-
+};
 
 module.exports = { register };
