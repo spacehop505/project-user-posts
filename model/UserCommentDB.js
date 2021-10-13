@@ -8,11 +8,18 @@ const CommentSchema = new Schema({
 }, { timestamps: true });
 
 
-//CommentSchema
-//  .pre('findOne', Populate('author'))
-//  .pre('find', Populate('author'))
-//  .pre('findOne', Populate('replies'))
-//  .pre('find', Populate('replies'));
+CommentSchema
+  // .pre('findOne', Populate('author'))
+  // .pre('find', Populate('author'))
+  .pre('findOne', Populate('comments'))
+  .pre('find', Populate('comments'));
+
+
+
+
+
+
+
 
 
 module.exports = model('Comment', CommentSchema);

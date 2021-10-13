@@ -7,9 +7,9 @@ const UserPostSchema = new Schema({
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 }, { timestamps: true });
 
-//UserPostSchema
-// .pre('findOne', Populate('author'))
-// .pre('find', Populate('author'));
+UserPostSchema
+  .pre('findOne', Populate('comments'))
+  .pre('find', Populate('comments'));
 
 
 module.exports = model('UserPost', UserPostSchema);
