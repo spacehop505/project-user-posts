@@ -6,6 +6,8 @@ const UserSchema = new Schema({
   password: { type: String, required: true, minLength: 6, maxLength: 255, select: false },
   username: { type: String, required: true, unique: true, minLength: 3, maxLength: 25 },
   posts: [{ type: Schema.Types.ObjectId, ref: 'UserPost' }],
+  following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 }, { timestamps: true });
 
 UserSchema.pre('save', function (next) {

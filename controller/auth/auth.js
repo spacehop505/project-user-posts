@@ -1,24 +1,4 @@
-
 const jwt = require('jsonwebtoken');
-
-/*
-const middlewareAuth = (req, res, next) => {
-  try {
-    const accessToken = req.header('Authorization').split(' ')[1];
-    const decodeAccessToken = jwt.verify(accessToken, 'FAKE_SECRET_ACCESS_TOKEN');
-    const userId = decodeAccessToken.userId;
-    if (req.body.userId && req.body.userId !== userId) {
-      throw 'Invalid user ID';
-    } else {
-      next();
-    }
-  } catch (err) {
-    res.status(401).json({
-      error: new Error('Invalid request!')
-    });
-  }
-}
-*/
 
 const middlewareAuth = (req, res, next) => {
   const accessToken = req.header('Authorization');
