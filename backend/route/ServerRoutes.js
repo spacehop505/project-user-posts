@@ -6,7 +6,7 @@ const userLogin = require('../controller/user-main/login');
 const Post = require('../controller/user-feature/Post');
 const Comment = require('../controller/user-feature/Comment');
 const User = require('../controller/user-feature/User');
-const auth = require('../controller/auth/auth');
+const auth = require('../middleware/auth');
 
 // REGISTER
 router.route('/register').post(userRegister.register);
@@ -16,6 +16,9 @@ router.post('/unfollow-user', auth.middlewareAuth, User.unfollowUser)
 
 // READ USER
 router.get('/user/:username', User.findUser);
+
+// READ PROFILE
+router.get('/profile/:username', User.findUser);
 
 // READ POST 
 router.route('/user/:username/:postId').get(User.findPost)

@@ -9,7 +9,7 @@ const createPost = async (req, res) => {
     const updatedUserPostsRef = await UserDB.updateOne({ _id: authId }, { $push: { 'posts': { $each: [createdNewUserPost], $position: 0 } } });
     res.status(200).json({ success: { status: 200, request: 'POST', message: 'POST_CREATED' } });
   } catch (err) {
-    res.status(400).json({ error: { status: 400, request: 'POST', message: 'SERVER_ERROR' } })
+    res.status(400).json({ message: 'SERVER_ERROR' })
   }
 };
 
@@ -23,7 +23,7 @@ const deletePost = async (req, res) => {
     }
     res.status(200).json({ success: { status: 200, request: 'DELETE', message: 'POST_DELETED' } });
   } catch (err) {
-    res.status(400).json({ error: { status: 400, request: 'DELETE', message: 'SERVER_ERROR' } })
+    res.status(400).json({ message: 'SERVER_ERROR' })
   }
 }
 

@@ -11,7 +11,7 @@ const createCommentFromPost = async (req, res) => {
       return res.status(400).json({ error: { status: 400, message: 'POST_DOES_NOT_EXIST' } })
     }
     const comment = await UserCommentDB({ author: authId, message: message }).save();
-    const post = await UserPostDB.findByIdAndUpdate(postId, { $push: { comments: { $each: [comment], $position: 0 } } });
+    const post1 = await UserPostDB.findByIdAndUpdate(postId, { $push: { comments: { $each: [comment], $position: 0 } } });
     res.status(200).json({ success: { status: 200, message: 'COMMENT_TO_POST_CREATED' } });
   } catch (err) {
     res.status(400).json({ error: { status: 400, message: 'SERVER_ERROR' } });
