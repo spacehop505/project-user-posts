@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import './Body.css'
-import NewPost from "./user-profile/NewPost";
-import Post from "./user-profile/Posts";
-import Profile from "./user-profile/Profile";
+import NewPost from "./NewPost";
+import Post from "./Posts";
+import Profile from "./Profile";
 import axios from 'axios';
 const Body = () => {
 
@@ -22,7 +22,7 @@ const Body = () => {
 
 
   const createUserPost = async () => {
-    await api.post(`/post`, { message: getTextarea }, { headers: { 'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZjdiMTRiMDQwNjQzMmU0ZDE0NzAiLCJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MzQzMjc1ODUsImV4cCI6MTYzNDMyOTM4NX0.BwWJfTLcXEg1XNWF5E0nqbVJUvlppGciA1CLou2RUVU` } })
+    await api.post(`/post`, { message: getTextarea }, { headers: { 'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZjdiMTRiMDQwNjQzMmU0ZDE0NzAiLCJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MzQzNzMwMDgsImV4cCI6MTYzNDk3NzgwOH0.wxOXmAJBM9orovCyryBtBp5BX1F5dducLZY2nmM4G14` } })
       .then(res => {
         console.log('[createUserPost] -', res);
         setTextarea('');
@@ -32,6 +32,9 @@ const Body = () => {
         setPostError(err.response.data)
       })
   }
+
+
+
 
   const AxiosGetPosts = async () => {
     const res = await api.get(`/profile/aaa`);

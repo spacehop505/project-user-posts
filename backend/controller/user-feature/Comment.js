@@ -23,7 +23,7 @@ const createCommentFromComment = async (req, res) => {
   const { message } = req.body;
   const { commentId } = req.params;
   try {
-    const comment = await UserCommentDB.findById(postId);
+    const comment = await UserCommentDB.findById(commentId);
     if (!comment) {
       return res.status(400).json({ error: { status: 400, request: 'POST', message: 'COMMENT_DOES_NOT_EXIST' } })
     }
@@ -31,6 +31,7 @@ const createCommentFromComment = async (req, res) => {
     const insertedCommentInExistingComment = await UserCommentDB.findByIdAndUpdate(commentId, { $push: { comments: { $each: [newCommentReply], $position: 0 } } });
     res.status(200).json({ success: { status: 200, request: 'POST', message: 'NESTED_COMMENT_CREATED' } });
   } catch (err) {
+    console.log(err)
     res.status(400).json({ error: { status: 400, request: 'POST', message: 'SERVER_ERROR' } });
   }
 };
@@ -45,6 +46,7 @@ const deleteComment = async (req, res) => {
     }
     res.status(200).json({ success: { status: 200, message: 'COMMENT_DELETED' } });
   } catch (err) {
+    console.log(err)
     res.status(400).json({ error: { status: 400, message: 'SERVER_ERROR' } });
   }
 };

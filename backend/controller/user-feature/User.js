@@ -63,9 +63,9 @@ const findUser = async (req, res) => {
 };
 
 const findPost = async (req, res) => {
-  const { username, postId } = req.params;
+  const { postId } = req.params;
   try {
-    const postResult = await UserPostDB.findOne({ _id: postId, username: username }).select('-updatedAt').populate('comments')
+    const postResult = await UserPostDB.findOne({ _id: postId }).select('-updatedAt').populate('comments').populate('author')
     if (!postResult) {
       return res.status(400).json({ success: { status: 400, message: 'POST_NOT_FOUND' } })
     }

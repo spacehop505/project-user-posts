@@ -21,7 +21,7 @@ router.get('/user/:username', User.findUser);
 router.get('/profile/:username', User.findUser);
 
 // READ POST 
-router.route('/user/:username/:postId').get(User.findPost)
+router.route('/post/:postId').get(User.findPost)
 
 // POST CREATE
 router.route('/post').post(auth.middlewareAuth, Post.createPost);

@@ -1,5 +1,6 @@
 import React from "react";
 import axios from 'axios';
+import { BrowserRouter, Route, Link, Switch, Redirect, useParams, useLocation } from 'react-router-dom';
 const Post = ({ postInfo, userInfo, userTest }) => {
   const api = axios.create({
     baseURL: 'http://localhost:4000/'
@@ -7,7 +8,7 @@ const Post = ({ postInfo, userInfo, userTest }) => {
 
   const deleteUserPost = async () => {
     console.log(postInfo._id);
-    await api.delete(`/post/remove/${postInfo._id}`, { headers: { 'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZjdiMTRiMDQwNjQzMmU0ZDE0NzAiLCJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MzQzMjk2MTksImV4cCI6MTYzNDMzMTQxOX0.1owp5p5Mv4AGGqU6HO2y6P-523B_l29hK8gBU875i7Q` } })
+    await api.delete(`/post/remove/${postInfo._id}`, { headers: { 'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZjdiMTRiMDQwNjQzMmU0ZDE0NzAiLCJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MzQzNzMwMDgsImV4cCI6MTYzNDk3NzgwOH0.wxOXmAJBM9orovCyryBtBp5BX1F5dducLZY2nmM4G14` } })
       .then(res => {
         userTest();
       }).catch(err => {
@@ -39,7 +40,7 @@ const Post = ({ postInfo, userInfo, userTest }) => {
         </div>
 
         <div className="comment mt-2 pt-2 ">
-          <a href="/">Comments {postInfo.comments.length}</a>
+          <Link to={`/post/${postInfo._id}`} >Comments {postInfo.comments.length}</Link>
         </div>
       </div>
     </div>

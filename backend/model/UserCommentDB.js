@@ -8,8 +8,8 @@ const CommentSchema = new Schema({
 }, { timestamps: true });
 
 CommentSchema
-  // .pre('findOne', Populate('author'))
-  // .pre('find', Populate('author'))
+  .pre('findOne', Populate('author'))
+  .pre('find', Populate('author'))
   .pre('findOne', Populate('comments'))
   .pre('find', Populate('comments'));
 

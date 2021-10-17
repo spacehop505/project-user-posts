@@ -8,8 +8,10 @@ const UserPostSchema = new Schema({
 }, { timestamps: true });
 
 UserPostSchema
+
   .pre('findOne', Populate('comments'))
-  .pre('find', Populate('comments'));
+  .pre('find', Populate('comments'))
+
 
 
 module.exports = model('UserPost', UserPostSchema);

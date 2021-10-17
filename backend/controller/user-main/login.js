@@ -10,7 +10,7 @@ const login = (req, res) => {
         // * compare findOne() password with req.body.password
         user.comparePassword(password, (err, isPasswordMatch) => {
           if (isPasswordMatch) {
-            const accessToken = jwt.sign({ _id: user.id, email: user.email }, 'FAKE_SECRET_ACCESS_TOKEN', { expiresIn: '30m' });
+            const accessToken = jwt.sign({ _id: user.id, email: user.email }, 'FAKE_SECRET_ACCESS_TOKEN', { expiresIn: '7d' });
             res.status(200).json({ success: { status: 200, message: 'LOGIN_SUCCESS', accessToken: accessToken } });
           } else {
             res.status(403).json({ error: { status: 403, message: 'INVALID_PASSWORD' } });
