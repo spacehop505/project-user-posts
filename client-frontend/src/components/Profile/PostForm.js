@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-const NewPost = ({ selectValue, createUserPost, getTextarea, getPostError }) => {
+import React from "react";
+
+const PostForm = ({ setTextarea, createUserPost, getTextarea, getPostError }) => {
 
   return (
     <div className="main-top has-background-white border-body p-2">
       <div className="columns m-0  ">
         <div className="column is-three-quarters">
-          <textarea className="textarea is-info" placeholder="Enter Text..." onChange={selectValue} value={getTextarea}></textarea>
+          <textarea className="textarea is-info" placeholder="Enter Text..." onChange={(event) => { setTextarea(event.target.value) }} value={getTextarea}></textarea>
         </div>
         <div className="column">
           <button className="button" onClick={createUserPost}>Create Post</button>
@@ -18,4 +19,4 @@ const NewPost = ({ selectValue, createUserPost, getTextarea, getPostError }) => 
   );
 }
 
-export default NewPost;
+export default PostForm;

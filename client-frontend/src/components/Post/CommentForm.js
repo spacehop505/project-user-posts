@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import axios from 'axios';
-const CommentForm = ({ formID, setActiveComment, createUserComment, setMessage, getMessage }) => {
-
-
+const CommentForm = ({ formID, setActiveComment, createComment, setMessage, getMessage }) => {
 
   return (
     <div className='columns m-0 mb-4 '>
@@ -12,7 +9,7 @@ const CommentForm = ({ formID, setActiveComment, createUserComment, setMessage, 
       </div>
       <div className='column is-2 p-0   '>
         <div className="mt-0 ml-1 mr-1 mb-1 ">
-          <button className="button is-success is-small" onClick={() => { createUserComment(formID, getMessage) }}>Submit</button>
+          <button className="button is-success is-small" onClick={() => { createComment(formID, getMessage) }}>Submit</button>
         </div>
         <div className="m-1 ">
           <button className="button is-warning  is-small" onClick={() => { setActiveComment(null) }}>Cancel</button>

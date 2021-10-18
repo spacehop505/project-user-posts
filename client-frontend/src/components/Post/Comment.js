@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Link, Switch, Redirect, useParams, useLocation } from 'react-router-dom';
-
 import CommentForm from "./CommentForm";
-import axios from 'axios';
-// COMPONENT
-const Comment = ({ getPost, activeComment, setActiveComment, myId, AxiosGetPosts }) => {
-  const api = axios.create({
-    baseURL: 'http://localhost:4000/'
-  });
+
+const Comment = ({ getPost, activeComment, setActiveComment, myId, BackendGetPost, api }) => {
 
   const isReplying = activeComment && activeComment.value == true && activeComment.id == myId;
   const ss = useParams().postId;
-  const createUserComment = async (commentid, message) => {
-    await api.post(`/comment/comment/${commentid}`, { message: message }, { headers: { 'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZjdiMTRiMDQwNjQzMmU0ZDE0NzAiLCJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MzQzNzMwMDgsImV4cCI6MTYzNDk3NzgwOH0.wxOXmAJBM9orovCyryBtBp5BX1F5dducLZY2nmM4G14` } })
+  const token = JSON.parse(localStorage.getItem('userData')).token;
+  const userId = JSON.parse(localStorage.getItem('userData')).userId;
+  const createCommentComment = async (commentid, message) => {
+    await api.post(`/comment/comment/${commentid}`, { message: message }, { headers: { 'Authorization': `Bearer ${token}` } })
       .then(res => {
         console.log('[createUserPost] -', res);
         setActiveComment(null);
         console.log(ss);
-        AxiosGetPosts(ss);
-
+        BackendGetPost(ss);
       }).catch(err => {
         console.log(err)
       })
@@ -27,8 +23,8 @@ const Comment = ({ getPost, activeComment, setActiveComment, myId, AxiosGetPosts
 
   const [getMessage, setMessage] = useState('');
 
-  const deleteUserComment = async (commentid) => {
-    await api.delete(`/post/comment/remove/${commentid}`, { headers: { 'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZjdiMTRiMDQwNjQzMmU0ZDE0NzAiLCJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MzQzNzMwMDgsImV4cCI6MTYzNDk3NzgwOH0.wxOXmAJBM9orovCyryBtBp5BX1F5dducLZY2nmM4G14` } })
+  const deleteComment = async (commentid) => {
+    await api.delete(`/post/comment/remove/${commentid}`, { headers: { 'Authorization': `Bearer ${token}` } })
       .then(res => {
         console.log('deleted');
       }).catch(err => {
@@ -36,13 +32,15 @@ const Comment = ({ getPost, activeComment, setActiveComment, myId, AxiosGetPosts
       })
   }
 
-
-
-  // {(reply.author == '6167f7b14b0406432e4d1470') && <button className='button is-small' onClick={() => deleteUserComment(reply._id)}>Delete</button>}
-  //<button className='button is-small' onClick={() => createUserComment(reply._id)}>Comments</button>
   return (
     <div style={{ "marginLeft": "15px", "marginTop": "5px" }}>
-      {isReplying && (<CommentForm formID={myId} setActiveComment={setActiveComment} createUserComment={createUserComment} getMessage={getMessage} setMessage={setMessage} />)}
+      {isReplying && (<CommentForm
+        formID={myId}
+        setActiveComment={setActiveComment}
+        createComment={createCommentComment}
+        getMessage={getMessage}
+        setMessage={setMessage}
+      />)}
       {getPost.comments.length > 0 && (
         <div>
           {getPost.comments.map((reply) => (
@@ -64,9 +62,9 @@ const Comment = ({ getPost, activeComment, setActiveComment, myId, AxiosGetPosts
                 </div>
 
                 <div className="column p-1 ">
-                  {(reply.author._id == '6167f7b14b0406432e4d1470') && (
+                  {(reply.author._id == userId) && (
                     <div className="p-0">
-                      <button className="button p-1 is-danger ml-1 is-small is-pulled-right" onClick={() => deleteUserComment(reply._id)}>delete</button>
+                      <button className="button p-1 is-danger ml-1 is-small is-pulled-right" onClick={() => deleteComment(reply._id)}>delete</button>
                     </div>
                   )}
                 </div>
@@ -80,7 +78,15 @@ const Comment = ({ getPost, activeComment, setActiveComment, myId, AxiosGetPosts
                 {true && (<button className="button p-1 is-info is-small" onClick={() => { setActiveComment({ id: reply._id, value: true }) }}>Reply</button>)}
               </div>
 
-              <Comment getPost={reply} key={reply._id} myId={reply._id} activeComment={activeComment} setActiveComment={setActiveComment} AxiosGetPosts={AxiosGetPosts}></Comment>
+              <Comment
+                getPost={reply}
+                key={reply._id}
+                myId={reply._id}
+                activeComment={activeComment}
+                setActiveComment={setActiveComment}
+                BackendGetPost={BackendGetPost}
+                api={api}
+              ></Comment>
             </div>
 
           ))}

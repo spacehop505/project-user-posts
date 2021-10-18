@@ -62,6 +62,23 @@ const findUser = async (req, res) => {
   }
 };
 
+
+const findUserLogin = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const user = await UserDB.findOne({ _id: userId }).select('-email -updatedAt').populate('posts', '-author -updatedAt')
+    if (!user) {
+      return res.status(400).json({ success: { status: 400, message: 'USER_NOT_FOUND' } })
+    }
+    res.status(200).json({ success: { status: 200, message: 'POSTS_BY_USERNAME_DOCUMENTS_SENT', content: user } })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({ error: { status: 400, message: 'SERVER_ERROR' } });
+  }
+};
+
+
+
 const findPost = async (req, res) => {
   const { postId } = req.params;
   try {
@@ -76,4 +93,4 @@ const findPost = async (req, res) => {
 };
 
 
-module.exports = { findUser, findPost, followUser, unfollowUser };
+module.exports = { findUser, findPost, followUser, unfollowUser, findUserLogin };

@@ -20,6 +20,8 @@ router.get('/user/:username', User.findUser);
 // READ PROFILE
 router.get('/profile/:username', User.findUser);
 
+router.get('/profile/auth/:userId', auth.middlewareAuth, User.findUserLogin);
+
 // READ POST 
 router.route('/post/:postId').get(User.findPost)
 

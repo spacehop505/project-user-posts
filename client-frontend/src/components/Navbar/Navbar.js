@@ -1,5 +1,8 @@
 import React from "react";
-const Navbar = () => {
+const Navbar = ({ logout, getToken }) => {
+
+
+
   return (
     <nav className="level  pt-2 pb-2 ">
       <div className="level-left ">
@@ -13,7 +16,11 @@ const Navbar = () => {
 
       <div className="level-right ">
         <a href="/" className="level-item has-text-white">Home</a>
-        <a href="/" className="level-item has-text-white">Profile</a>
+        <a href="/profile" className="level-item has-text-white">Profile</a>
+
+        {!getToken && (<a href="/login" className="level-item has-text-white">Login</a>)}
+
+        {getToken && <a href="/logout" className="level-item has-text-white" onClick={logout}>Logout</a>}
       </div>
     </nav>
   );

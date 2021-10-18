@@ -1,37 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CommentForm from "./CommentForm";
-import axios from 'axios';
 
-const Post = ({ getPost, AxiosGetPosts }) => {
-  const api = axios.create({
-    baseURL: 'http://localhost:4000/'
-  });
+const Post = ({ getPost, BackendGetPost, api }) => {
+
   const [activeComment, setActiveComment] = useState(null);
   const [getMessage, setMessage] = useState('');
-  const isReplying = activeComment && activeComment.value == true && activeComment.id == getPost._id;
 
-  const createUserComment = async (commentid, message) => {
-    await api.post(`/post/comment/${commentid}`, { message: message }, { headers: { 'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZjdiMTRiMDQwNjQzMmU0ZDE0NzAiLCJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MzQzNzMwMDgsImV4cCI6MTYzNDk3NzgwOH0.wxOXmAJBM9orovCyryBtBp5BX1F5dducLZY2nmM4G14` } })
+  const isReply = activeComment && activeComment.value == true && activeComment.id == getPost._id;
+
+  const token = JSON.parse(localStorage.getItem('userData')).token;
+  const userId = JSON.parse(localStorage.getItem('userData')).userId;
+
+  const createPostComment = async (commentid, message) => {
+    await api.post(`/post/comment/${commentid}`, { message: message }, { headers: { 'Authorization': `Bearer ${token}` } })
       .then(res => {
-        console.log('[createUserPost] -', res);
+        console.log('[createPostComment] -', res);
         setActiveComment(null);
-        AxiosGetPosts(getPost._id)
+        BackendGetPost(getPost._id)
       }).catch(err => {
         console.log(err)
       })
   }
 
-
-  const deleteUserComment = async (commentid) => {
-    await api.delete(`/post/remove/${commentid}`, { headers: { 'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZjdiMTRiMDQwNjQzMmU0ZDE0NzAiLCJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MzQzNzMwMDgsImV4cCI6MTYzNDk3NzgwOH0.wxOXmAJBM9orovCyryBtBp5BX1F5dducLZY2nmM4G14` } })
+  const deletePost = async (commentid) => {
+    await api.delete(`/post/remove/${commentid}`, { headers: { 'Authorization': `Bearer ${token}` } })
       .then(res => {
-        console.log('deleted');
+        console.log('[deletePost] -', res);
       }).catch(err => {
         console.log(err, 'fail');
       })
   }
-
-
 
   return (
     <div>
@@ -50,9 +48,9 @@ const Post = ({ getPost, AxiosGetPosts }) => {
         </div>
 
         <div className="column p-1 ">
-          {(getPost.author._id == '6167f7b14b0406432e4d1470') && (
+          {(getPost.author._id == userId) && (
             <div className=" p-0">
-              <button className="button is-danger ml-1 is-small is-pulled-right" onClick={() => deleteUserComment(getPost._id)}>delete</button>
+              <button className="button is-danger ml-1 is-small is-pulled-right" onClick={() => deletePost(getPost._id)}>delete</button>
             </div>
           )}
           <div className=" p-0">
@@ -66,13 +64,13 @@ const Post = ({ getPost, AxiosGetPosts }) => {
         <span className="ow has-text-weight-bold">{getPost.message}</span>
       </div>
 
-      {isReplying && (<CommentForm
+      {isReply && (<CommentForm
         formID={getPost._id}
         setActiveComment={setActiveComment}
-        createUserComment={createUserComment}
+        createComment={createPostComment}
         getMessage={getMessage}
-        setMessage={setMessage} />)}
-
+        setMessage={setMessage}
+      />)}
     </div>
   );
 }

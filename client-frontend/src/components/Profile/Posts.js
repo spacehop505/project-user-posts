@@ -1,16 +1,15 @@
 import React from "react";
-import axios from 'axios';
-import { BrowserRouter, Route, Link, Switch, Redirect, useParams, useLocation } from 'react-router-dom';
-const Post = ({ postInfo, userInfo, userTest }) => {
-  const api = axios.create({
-    baseURL: 'http://localhost:4000/'
-  });
+import { Link } from 'react-router-dom';
+
+const Posts = ({ postInfo, userInfo, backendGetAuthProfile, api }) => {
+
+  const token = JSON.parse(localStorage.getItem('userData')).token;
+  const userId = JSON.parse(localStorage.getItem('userData')).userId;
 
   const deleteUserPost = async () => {
-    console.log(postInfo._id);
-    await api.delete(`/post/remove/${postInfo._id}`, { headers: { 'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTY3ZjdiMTRiMDQwNjQzMmU0ZDE0NzAiLCJlbWFpbCI6ImFhYUBnbWFpbC5jb20iLCJpYXQiOjE2MzQzNzMwMDgsImV4cCI6MTYzNDk3NzgwOH0.wxOXmAJBM9orovCyryBtBp5BX1F5dducLZY2nmM4G14` } })
+    await api.delete(`/post/remove/${postInfo._id}`, { headers: { 'Authorization': `Bearer ${token}` } })
       .then(res => {
-        userTest();
+        backendGetAuthProfile();
       }).catch(err => {
         console.log('fail')
       })
@@ -47,4 +46,4 @@ const Post = ({ postInfo, userInfo, userTest }) => {
   );
 }
 
-export default Post;
+export default Posts;

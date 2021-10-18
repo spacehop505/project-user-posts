@@ -1,6 +1,7 @@
 import React from "react";
+
 const Profile = ({ userInfo }) => {
-  console.log(userInfo)
+
   return (
     <div className="main-top border-body has-text-centered">
       <div className="columns is-flex is-centered m-0 mt-2">
